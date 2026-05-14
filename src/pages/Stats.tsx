@@ -25,10 +25,10 @@ import {
   BarChart,
   Bar
 } from 'recharts';
-import { firestoreService } from '../services/firestoreService';
+import { statsService } from '../services/statsService';
 import { TokenStats } from '../types';
 
-const data = [
+const chartData = [
   { name: '12:00', price: 0.00038, vol: 120 },
   { name: '13:00', price: 0.00041, vol: 150 },
   { name: '14:00', price: 0.00039, vol: 80 },
@@ -42,14 +42,19 @@ export const Stats: React.FC = () => {
   const [stats, setStats] = useState<TokenStats | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const fetchAllStats = async () => {
+    setLoading(true);
+    const data = await statsService.getCombinedStats();
+    if (data) setStats(data);
+    setLoading(false);
+  };
+
   useEffect(() => {
-    const fetchStats = async () => {
-      setLoading(true);
-      const data = await firestoreService.getStats();
-      if (data) setStats(data);
-      setLoading(false);
-    };
-    fetchStats();
+    fetchAllStats();
+    
+    // Auto-refresh every 60 seconds
+    const interval = setInterval(fetchAllStats, 60000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -66,15 +71,16 @@ export const Stats: React.FC = () => {
             </div>
             <div className="flex items-center gap-4">
                <button 
-                 onClick={() => firestoreService.getStats().then(s => s && setStats(s))}
-                 className="bg-surface-container border border-outline-variant/30 p-4 hover:bg-surface-container-high transition-colors text-on-background/60"
+                 onClick={fetchAllStats}
+                 disabled={loading}
+                 className="bg-surface-container border border-outline-variant/30 p-4 hover:bg-surface-container-high transition-colors text-on-background/60 disabled:opacity-50"
                >
                  <RefreshCw size={20} className={cn(loading && "animate-spin")} />
                </button>
                <div className="bg-secondary/10 border border-secondary/30 px-6 py-4 flex flex-col items-end">
                  <span className="text-[10px] font-mono text-secondary uppercase font-bold tracking-widest">Live Price</span>
                  <span className="text-2xl font-display font-black text-secondary leading-none">
-                   ${stats?.price.toFixed(8) || "0.00042069"}
+                   ${stats?.price ? stats.price.toFixed(stats.price < 0.0001 ? 10 : 6) : "0.0000000000"}
                  </span>
                </div>
             </div>
@@ -100,7 +106,7 @@ export const Stats: React.FC = () => {
                </div>
                <div className="h-[400px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={data}>
+                  <AreaChart data={chartData}>
                     <defs>
                       <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor="#94de2d" stopOpacity={0.3}/>
@@ -129,7 +135,7 @@ export const Stats: React.FC = () => {
                   </div>
                   <div className="h-[200px] w-full">
                     <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={data}>
+                      <BarChart data={chartData}>
                         <Bar dataKey="vol" fill="#ddb7ff" radius={[4, 4, 0, 0]} />
                         <Tooltip 
                           contentStyle={{ backgroundColor: '#201f1f', border: '1px solid #4d4354' }}
@@ -174,19 +180,26 @@ export const Stats: React.FC = () => {
             {/* Grid of cards */}
             <StatCard 
               label="Market Cap" 
-              value={stats ? `$${(stats.marketCap / 1000000).toFixed(1)}M` : "$6.9M"} 
+              value={stats ? stats.marketCap >= 1000000 ? `$${(stats.marketCap / 1000000).toFixed(2)}M` : `$${(stats.marketCap / 1000).toFixed(1)}K` : "$..."} 
               icon={Globe} 
               trend="4.2" 
               isPositive={true} 
             />
             <StatCard 
               label="Holders" 
-              value={stats ? stats.holders.toLocaleString() : "4,200"} 
+              value={stats ? stats.holders.toLocaleString() : "..."} 
               icon={BarChart3} 
             />
             <StatCard 
+              label="Liquidity" 
+              value={stats ? `$${(stats.liquidity / 1000).toFixed(1)}K` : "$..."} 
+              icon={Activity} 
+              trend="2.4"
+              isPositive={true}
+            />
+            <StatCard 
               label="Total Burned" 
-              value={stats ? `${(stats.burnedToken / 1000000000).toFixed(1)}B` : "6.9B"} 
+              value={stats ? `${(stats.burnedToken / 1000000000).toFixed(1)}B` : "..."} 
               icon={Flame} 
               trend="1.1" 
               isPositive={true} 
@@ -218,9 +231,14 @@ export const Stats: React.FC = () => {
                     </div>
                   ))}
                </div>
-               <button className="p-4 text-center font-display font-black uppercase text-xs text-primary hover:bg-primary/10 transition-all border-t border-outline-variant/30">
-                 View Explorer
-               </button>
+               <a 
+                 href="https://dexscreener.com/solana/56RCsF1zhwn7wJWd7dHDZu7yiCNGVyaMF8kTZYSBpump"
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 className="p-4 text-center font-display font-black uppercase text-xs text-primary hover:bg-primary/10 transition-all border-t border-outline-variant/30"
+               >
+                 View DexScreener
+               </a>
             </div>
           </div>
         </div>

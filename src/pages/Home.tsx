@@ -3,20 +3,25 @@ import { motion } from 'motion/react';
 import { ArrowRight, Flame, Layers, ShieldCheck, Zap, TrendingUp, Users, Globe } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { StatCard } from '../components/StatCard';
-import { NavItem } from '../types';
+import { NavItem, TokenStats } from '../types';
 import { getSetting } from '../services/settingsService';
+import { statsService } from '../services/statsService';
 
 export const Home: React.FC = () => {
   const [heroImage, setHeroImage] = useState<string>('https://images.unsplash.com/photo-1743196924823-393c833c8a93?auto=format&fit=crop&q=80&w=800');
+  const [stats, setStats] = useState<TokenStats | null>(null);
 
   useEffect(() => {
-    async function loadHeroImage() {
+    async function loadData() {
       const setting = await getSetting('hero_image');
       if (setting) {
         setHeroImage(setting);
       }
+      
+      const s = await statsService.getCombinedStats();
+      if (s) setStats(s);
     }
-    loadHeroImage();
+    loadData();
   }, []);
 
   return (
@@ -100,7 +105,9 @@ export const Home: React.FC = () => {
             >
               <div className="flex flex-col gap-1">
                 <span className="text-[10px] font-mono opacity-50 uppercase">Current Holders</span>
-                <span className="text-2xl font-display font-black text-secondary">69,420</span>
+                <span className="text-2xl font-display font-black text-secondary">
+                  {stats ? stats.holders.toLocaleString() : "69,420"}
+                </span>
               </div>
             </motion.div>
           </motion.div>
@@ -111,10 +118,34 @@ export const Home: React.FC = () => {
       <section className="bg-surface-container-low border-y border-outline-variant/30 py-20 relative overflow-hidden">
         <div className="container mx-auto px-4 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <StatCard label="Token Price" value="$0.000420" icon={TrendingUp} trend="12.5" isPositive={true} />
-            <StatCard label="Market Cap" value="$6.9M" icon={Globe} trend="4.2" isPositive={true} />
-            <StatCard label="Holders" value="12.4K" icon={Users} trend="2.1" isPositive={true} />
-            <StatCard label="Liquidity" value="$1.2M" icon={ShieldCheck} trend="0" isPositive={true} />
+            <StatCard 
+              label="Token Price" 
+              value={stats ? `$${stats.price.toFixed(stats.price < 0.0001 ? 10 : 6)}` : "$0.000420"} 
+              icon={TrendingUp} 
+              trend="12.5" 
+              isPositive={true} 
+            />
+            <StatCard 
+              label="Market Cap" 
+              value={stats ? stats.marketCap >= 1000000 ? `$${(stats.marketCap / 1000000).toFixed(2)}M` : `$${(stats.marketCap / 1000).toFixed(1)}K` : "$6.9M"} 
+              icon={Globe} 
+              trend="4.2" 
+              isPositive={true} 
+            />
+            <StatCard 
+              label="Holders" 
+              value={stats ? stats.holders.toLocaleString() : "12.4K"} 
+              icon={Users} 
+              trend="2.1" 
+              isPositive={true} 
+            />
+            <StatCard 
+              label="Liquidity" 
+              value={stats ? `$${(stats.liquidity / 1000).toFixed(1)}K` : "$1.2M"} 
+              icon={ShieldCheck} 
+              trend="0" 
+              isPositive={true} 
+            />
           </div>
         </div>
       </section>

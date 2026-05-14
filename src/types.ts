@@ -28,6 +28,7 @@ export interface TokenStats {
   liquidity: number;
   holders: number;
   volume24h: number;
+  burnedToken: number;
   burnPercent: number;
   tax: string;
   lpStatus: string;
