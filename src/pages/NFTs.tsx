@@ -3,14 +3,37 @@ import { motion } from 'framer-motion';
 import { Shield, Zap, Flame, Crown, Filter, ChevronRight } from 'lucide-react';
 import { cn } from '../lib/utils';
 
-const nfts = [
-  { id: 1, name: "Neon Sludge #001", rarity: "Legendary", price: "2.5 SOL", image: "https://images.unsplash.com/photo-1634986666676-ec8fd927c23d?auto=format&fit=crop&q=80&w=400" },
-  { id: 2, name: "Toxic Fang #042", rarity: "Epic", price: "1.2 SOL", image: "https://images.unsplash.com/photo-1635322966219-b75ed372eb01?auto=format&fit=crop&q=80&w=400" },
-  { id: 3, name: "Glow Gator #113", rarity: "Rare", price: "0.8 SOL", image: "https://images.unsplash.com/photo-1635323069151-57434190c1f4?auto=format&fit=crop&q=80&w=400" },
-  { id: 4, name: "Swamp King #999", rarity: "Mythic", price: "10.0 SOL", image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=400" },
-  { id: 5, name: "Mud Runner #012", rarity: "Common", price: "0.3 SOL", image: "https://images.unsplash.com/photo-1635323069357-1943c2c1248a?auto=format&fit=crop&q=80&w=400" },
-  { id: 6, name: "Acid Belly #088", rarity: "Epic", price: "1.5 SOL", image: "https://images.unsplash.com/photo-1635323069503-4613cbe76fba?auto=format&fit=crop&q=80&w=400" },
+const nftImages = [
+  "photo_2026-04-25_16-48-31-1.jpg",
+  "photo_2026-04-25_16-48-31-2.jpg",
+  "photo_2026-04-25_16-48-31.jpg",
+  "photo_2026-04-25_16-48-44-1.jpg",
+  "photo_2026-04-25_16-48-44.jpg",
+  "photo_2026-04-25_16-48-54-1.jpg",
+  "photo_2026-04-25_16-48-54.jpg",
+  "photo_2026-04-25_16-48-57-1.jpg",
+  "photo_2026-04-25_16-48-57.jpg",
+  "photo_2026-04-25_16-49-00.jpg",
+  "photo_2026-04-25_16-49-06-1.jpg",
+  "photo_2026-04-25_16-49-06.jpg",
+  "photo_2026-04-25_16-49-08-1.jpg",
+  "photo_2026-04-25_16-49-08.jpg",
+  "photo_2026-04-25_16-49-11-1.jpg",
+  "photo_2026-04-25_16-49-11.jpg",
+  "photo_2026-04-25_16-49-14-1.jpg",
+  "photo_2026-04-25_16-49-14.jpg",
+  "photo_2026-04-25_16-49-17.jpg"
 ];
+
+const rarities = ["Common", "Rare", "Epic", "Legendary", "Mythic"];
+
+const nfts = nftImages.map((img, index) => ({
+  id: index + 1,
+  name: `Purple Croc #${(index + 1).toString().padStart(3, '0')}`,
+  rarity: rarities[Math.floor(Math.random() * rarities.length)],
+  price: `${(Math.random() * 2 + 0.5).toFixed(1)} SOL`,
+  image: `/images/nfts/${img}`
+}));
 
 export const NFTs: React.FC = () => {
   const [filter, setFilter] = useState('All');
@@ -24,7 +47,7 @@ export const NFTs: React.FC = () => {
           <div className="flex flex-col gap-4">
              <div className="flex items-center gap-2 text-primary font-mono text-sm uppercase tracking-[0.3em] font-bold">
                <Crown size={18} />
-               The Sludge Series
+               The Purple Croc
              </div>
              <h1 className="text-6xl md:text-8xl font-display font-black tracking-tighter uppercase leading-[0.85]">SUPREME<br />COLLECTION</h1>
              <p className="max-w-xl text-on-background/60 font-medium leading-relaxed">

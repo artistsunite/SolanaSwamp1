@@ -31,6 +31,7 @@ export const statsService = {
           marketCap: liveData.marketCap ?? base.marketCap,
           liquidity: liveData.liquidity ?? base.liquidity,
           volume24h: liveData.volume24h ?? base.volume24h,
+          holders: liveData.holders ?? base.holders,
         } : {})
       };
     } catch (error) {

@@ -52,7 +52,7 @@ export const Home: React.FC = () => {
                 STAY SNAPPY.
               </h1>
               <p className="text-xl md:text-2xl text-on-background/70 font-display font-bold max-w-xl mb-10 uppercase tracking-tight">
-                The official movement of the swamp. A high-energy degen experience with NFTs, DAO, and real-time corruption stats.
+                Solana needed a predator. 1,111 Crocs living their best life in the solana swamp.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
@@ -88,8 +88,8 @@ export const Home: React.FC = () => {
                 className="absolute -top-10 -right-10 bg-surface-container border border-outline-variant p-4 hidden lg:block glow-purple pointer-events-auto"
               >
                 <div className="flex flex-col gap-1">
-                  <span className="text-[10px] font-mono opacity-50 uppercase">Total Supply</span>
-                  <span className="text-2xl font-display font-black text-primary">1,111 CROCS</span>
+                  <span className="text-[10px] font-mono opacity-50 uppercase">Corruption Level</span>
+                  <span className="text-2xl font-display font-black text-primary">Over 9000!</span>
                 </div>
               </motion.div>
               
@@ -116,30 +116,30 @@ export const Home: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <StatCard 
               label="Token Price" 
-              value={stats ? `$${stats.price.toFixed(stats.price < 0.0001 ? 10 : 6)}` : "$0.000420"} 
+              value={stats ? `$${stats.price.toFixed(stats.price < 0.0001 ? 10 : 6)}` : "$0.000000"} 
               icon={TrendingUp} 
-              trend="12.5" 
+              trend="LIVE" 
               isPositive={true} 
             />
             <StatCard 
               label="Market Cap" 
-              value={stats ? stats.marketCap >= 1000000 ? `$${(stats.marketCap / 1000000).toFixed(2)}M` : `$${(stats.marketCap / 1000).toFixed(1)}K` : "$6.9M"} 
+              value={stats ? stats.marketCap >= 1000000 ? `$${(stats.marketCap / 1000000).toFixed(2)}M` : `$${(stats.marketCap / 1000).toFixed(1)}K` : "$0.0K"} 
               icon={Globe} 
-              trend="4.2" 
+              trend="LIVE" 
               isPositive={true} 
             />
             <StatCard 
               label="Holders" 
-              value={stats ? stats.holders.toLocaleString() : "12.4K"} 
+              value={stats ? stats.holders.toLocaleString() : "..."} 
               icon={Users} 
-              trend="2.1" 
+              trend="LIVE" 
               isPositive={true} 
             />
             <StatCard 
               label="Liquidity" 
-              value={stats ? `$${(stats.liquidity / 1000).toFixed(1)}K` : "$1.2M"} 
+              value={stats ? `$${(stats.liquidity / 1000).toFixed(1)}K` : "$0.0K"} 
               icon={ShieldCheck} 
-              trend="0" 
+              trend="LIVE" 
               isPositive={true} 
             />
           </div>
@@ -204,9 +204,14 @@ export const Home: React.FC = () => {
                  >
                     SWAP NOW
                  </a>
-                 <button className="border-4 border-on-primary text-on-primary px-12 py-5 font-display font-black text-2xl uppercase italic hover:bg-on-primary hover:text-primary transition-all">
+                 <a 
+                   href="https://discord.gg/3WA9zgEaZD" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   className="border-4 border-on-primary text-on-primary px-12 py-5 font-display font-black text-2xl uppercase italic hover:bg-on-primary hover:text-primary transition-all flex items-center justify-center"
+                 >
                     JOIN DISCORD
-                 </button>
+                 </a>
               </div>
            </div>
         </div>

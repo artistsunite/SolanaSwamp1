@@ -7,22 +7,17 @@ export interface DexScreenerResponse {
   pairs: Array<{
     priceUsd: string;
     fdv: number;
+    marketCap?: number;
     liquidity: {
       usd: number;
     };
     volume: {
       h24: number;
     };
-    boosts?: {
-      active: number;
-    };
-    chainId: string;
-    dexId: string;
-    pairAddress: string;
-    baseToken: {
-      address: string;
-      name: string;
-      symbol: string;
+    info?: {
+      imageUrl?: string;
+      websites?: Array<{ url: string; label: string }>;
+      socials?: Array<{ url: string; type: string }>;
     };
   }>;
 }
@@ -30,20 +25,22 @@ export interface DexScreenerResponse {
 export async function fetchLiveStats(): Promise<Partial<TokenStats> | null> {
   try {
     const response = await fetch(DEXSCREENER_API);
-    if (!response.ok) throw new Error('Failed to fetch from DexScreener');
+    if (!response.ok) throw new Error(`Failed to fetch from DexScreener: ${response.statusText}`);
     
     const data: DexScreenerResponse = await response.json();
     
     if (!data.pairs || data.pairs.length === 0) return null;
     
-    // Pick the most liquid pair or just the first one
-    const mainPair = data.pairs[0];
+    // Pick the most liquid pair
+    const mainPair = data.pairs.sort((a, b) => b.liquidity.usd - a.liquidity.usd)[0];
     
     return {
       price: parseFloat(mainPair.priceUsd),
-      marketCap: mainPair.fdv,
+      marketCap: mainPair.marketCap || mainPair.fdv,
       liquidity: mainPair.liquidity.usd,
       volume24h: mainPair.volume.h24,
+      // DexScreener API does not provide holder count natively.
+      // We return what we have and let the combined service handle the rest.
     };
   } catch (error) {
     console.error('DexScreener API Error:', error);
