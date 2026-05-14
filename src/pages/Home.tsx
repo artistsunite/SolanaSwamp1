@@ -195,6 +195,17 @@ export const Home: React.FC = () => {
               <p className="text-on-primary/70 font-display font-bold text-xl md:text-2xl max-w-2xl uppercase">
                 Grab your gear, secure your tokens, and become a part of the most ruthless community on the chain.
               </p>
+              
+              <div className="w-full max-w-3xl aspect-video rounded-2xl overflow-hidden border-4 border-on-primary/20 shadow-2xl">
+                <iframe 
+                  className="w-full h-full"
+                  src="https://www.youtube.com/embed/wN0oMyBpCjo" 
+                  title="YouTube video player" 
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                  allowFullScreen
+                ></iframe>
+              </div>
+
               <div className="flex flex-col sm:flex-row gap-6 mt-4">
                  <a 
                    href="https://pump.fun/coin/56RCsF1zhwn7wJWd7dHDZu7yiCNGVyaMF8kTZYSBpump" 
