@@ -79,9 +79,9 @@ service cloud.firestore {
     // Phase 4: Match Blocks
 
     match /proposals/{proposalId} {
-      allow read: if isValidId(proposalId);
-      allow create: if isAdmin() && isValidId(proposalId) && isValidProposal(incoming());
-      allow update: if isValidId(proposalId) && (
+      allow get, list: if true;
+      allow create: if isAdmin() && isValidProposal(incoming());
+      allow update: if (
         isSignedIn() && isValidProposal(incoming()) && (
           isAdmin() ||
           // Action: Vote
@@ -93,24 +93,24 @@ service cloud.firestore {
           )
         )
       );
-      allow delete: if isAdmin() && isValidId(proposalId);
+      allow delete: if isAdmin();
     }
 
     match /memes/{memeId} {
-      allow read: if isValidId(memeId);
-      allow create: if isEmailVerified() && isValidId(memeId) && isValidMeme(incoming());
-      allow update: if isAdmin() && isValidId(memeId) && isValidMeme(incoming());
-      allow delete: if isAdmin() && isValidId(memeId);
+      allow get, list: if true;
+      allow create: if isEmailVerified() && isValidMeme(incoming());
+      allow update: if isAdmin() && isValidMeme(incoming());
+      allow delete: if isAdmin();
     }
 
     match /stats/{statId} {
-      allow read: if isValidId(statId);
-      allow write: if isAdmin() && isValidId(statId) && isValidStat(incoming());
+      allow get, list: if true;
+      allow write: if isAdmin() && isValidStat(incoming());
     }
 
     match /settings/{settingId} {
-      allow read: if isValidId(settingId);
-      allow write: if isAdmin() && isValidId(settingId) && isValidSetting(incoming());
+      allow get, list: if true;
+      allow write: if isAdmin() && isValidSetting(incoming());
     }
   }
 }
