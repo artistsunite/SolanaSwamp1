@@ -1,0 +1,76 @@
+{
+  "entities": {
+    "Setting": {
+      "title": "App Settings",
+      "description": "Global configuration settings",
+      "type": "object",
+      "properties": {
+        "key": { "type": "string" },
+        "value": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["key", "value", "updatedAt"]
+    },
+    "Proposal": {
+      "title": "DAO Proposals",
+      "description": "Governance proposals for the swamp",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "status": { "type": "string", "enum": ["Active", "Passed", "Failed"] },
+        "endsAt": { "type": "string", "format": "date-time" },
+        "yesVotes": { "type": "number" },
+        "totalVotes": { "type": "number" }
+      },
+      "required": ["title", "description", "status", "endsAt", "yesVotes", "totalVotes"]
+    },
+    "Meme": {
+      "title": "Swamp Memes",
+      "description": "Community generated propaganda",
+      "type": "object",
+      "properties": {
+        "imageUrl": { "type": "string" },
+        "author": { "type": "string" },
+        "tips": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+     "required": ["imageUrl", "author", "tips", "createdAt"]
+    },
+    "Stat": {
+      "title": "Market Stats",
+      "description": "Real-time token and market data",
+      "type": "object",
+      "properties": {
+        "price": { "type": "number" },
+        "marketCap": { "type": "number" },
+        "liquidity": { "type": "number" },
+        "holders": { "type": "number" },
+        "volume24h": { "type": "number" },
+        "burnedToken": { "type": "number" },
+        "burnPercent": { "type": "number" },
+        "tax": { "type": "string" },
+        "lpStatus": { "type": "string" }
+      },
+      "required": ["price", "marketCap", "liquidity", "holders", "volume24h", "burnedToken", "burnPercent"]
+    }
+  },
+  "firestore": {
+    "proposals": {
+      "schema": "Proposal",
+      "description": "Collection of DAO proposals"
+    },
+    "memes": {
+      "schema": "Meme",
+      "description": "Community meme gallery"
+    },
+    "stats": {
+      "schema": "Stat",
+      "description": "Token market statistics"
+    },
+    "settings": {
+      "schema": "Setting",
+      "description": "Global app settings and configuration"
+    }
+  }
+}

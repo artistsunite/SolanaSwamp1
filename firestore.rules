@@ -1,0 +1,116 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // 0. Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Phase 3: Primitives
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isEmailVerified() {
+      return isSignedIn() && request.auth.token.email_verified == true;
+    }
+
+    function isAdmin() {
+      return isEmailVerified() && request.auth.token.email == 'jaronwalker@gmail.com';
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // 1. Validation Blueprints
+
+    function isValidProposal(data) {
+      return data.keys().hasAll(['title', 'description', 'status', 'endsAt', 'yesVotes', 'totalVotes'])
+        && data.keys().size() == 6
+        && data.title is string && data.title.size() > 0 && data.title.size() <= 100
+        && data.description is string && data.description.size() <= 1000
+        && data.status in ['Active', 'Passed', 'Failed']
+        && data.endsAt is string 
+        && data.yesVotes is int && data.yesVotes >= 0
+        && data.totalVotes is int && data.totalVotes >= data.yesVotes;
+    }
+
+    function isValidMeme(data) {
+      return data.keys().hasAll(['imageUrl', 'author', 'tips', 'createdAt'])
+        && data.keys().size() == 4
+        && data.imageUrl is string && data.imageUrl.size() > 0 && data.imageUrl.size() <= 500
+        && data.author is string && data.author.size() > 0 && data.author.size() <= 50
+        && data.tips is number && data.tips >= 0
+        && (data.createdAt == request.time || data.createdAt is timestamp); 
+    }
+
+    function isValidStat(data) {
+      return data.keys().hasAll(['price', 'marketCap', 'liquidity', 'holders', 'volume24h', 'burnedToken', 'burnPercent', 'tax', 'lpStatus'])
+        && data.keys().size() == 9
+        && data.price is number
+        && data.marketCap is number
+        && data.liquidity is number
+        && data.holders is int
+        && data.volume24h is number
+        && data.burnedToken is number
+        && data.burnPercent is number
+        && data.tax is string && data.tax.size() <= 10
+        && data.lpStatus is string && data.lpStatus.size() <= 20;
+    }
+
+    function isValidSetting(data) {
+      return data.keys().hasAll(['key', 'value', 'updatedAt'])
+        && data.keys().size() == 3
+        && data.key is string && data.key.size() > 0
+        && data.value is string
+        && (data.updatedAt == request.time || data.updatedAt is timestamp);
+    }
+
+    // Phase 4: Match Blocks
+
+    match /proposals/{proposalId} {
+      allow read: if isValidId(proposalId);
+      allow create: if isAdmin() && isValidId(proposalId) && isValidProposal(incoming());
+      allow update: if isValidId(proposalId) && (
+        isSignedIn() && isValidProposal(incoming()) && (
+          isAdmin() ||
+          // Action: Vote
+          (
+            incoming().diff(existing()).affectedKeys().hasOnly(['yesVotes', 'totalVotes']) &&
+            incoming().totalVotes == existing().totalVotes + 1 &&
+            (incoming().yesVotes == existing().yesVotes || incoming().yesVotes == existing().yesVotes + 1) &&
+            existing().status == 'Active'
+          )
+        )
+      );
+      allow delete: if isAdmin() && isValidId(proposalId);
+    }
+
+    match /memes/{memeId} {
+      allow read: if isValidId(memeId);
+      allow create: if isEmailVerified() && isValidId(memeId) && isValidMeme(incoming());
+      allow update: if isAdmin() && isValidId(memeId) && isValidMeme(incoming());
+      allow delete: if isAdmin() && isValidId(memeId);
+    }
+
+    match /stats/{statId} {
+      allow read: if isValidId(statId);
+      allow write: if isAdmin() && isValidId(statId) && isValidStat(incoming());
+    }
+
+    match /settings/{settingId} {
+      allow read: if isValidId(settingId);
+      allow write: if isAdmin() && isValidId(settingId) && isValidSetting(incoming());
+    }
+  }
+}

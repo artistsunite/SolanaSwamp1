@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Anybody:wght@800;900&family=Hanken+Grotesk:wght@400;600&family=JetBrains+Mono:wght@500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-display: "Anybody", sans-serif;
+
+  --color-background: #131313;
+  --color-on-background: #e5e2e1;
+  --color-primary: #ddb7ff;
+  --color-primary-container: #b76dff;
+  --color-on-primary: #490080;
+  --color-secondary: #94de2d;
+  --color-secondary-container: #7ac100;
+  --color-on-secondary: #1f3700;
+  --color-tertiary: #96d5a3;
+  --color-surface: #131313;
+  --color-surface-container: #201f1f;
+  --color-surface-container-low: #1c1b1b;
+  --color-surface-container-high: #2a2a2a;
+  --color-surface-container-highest: #353534;
+  --color-outline: #988d9f;
+  --color-outline-variant: #4d4354;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-on-background font-sans;
+  }
+}
+
+@layer components {
+  .swamp-texture {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    opacity: 0.05;
+  }
+
+  .glow-purple {
+    @apply shadow-[0_0_15px_rgba(221,183,255,0.3)];
+  }
+
+  .glow-green {
+    @apply shadow-[0_0_15px_rgba(148,222,45,0.3)];
+  }
+  
+  .neon-text-purple {
+    text-shadow: 0 0 10px rgba(221, 183, 255, 0.8), 0 0 20px rgba(221, 183, 255, 0.5);
+  }
+}

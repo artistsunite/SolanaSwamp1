@@ -1,0 +1,9 @@
+node_modules
+dist
+.git
+.gitignore
+.env
+# Only ignore blueprints and rules not needed at runtime
+firebase-blueprint.json
+firestore.rules
+firebase.json
