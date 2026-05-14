@@ -19,6 +19,6 @@ jobs:
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
-          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_SKILLED_LOADER_431609_E1 }}"
-          projectId: skilled-loader-431609-e1
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_SOLANASWAMP1 }}"
+          projectId: solanaswamp1
           channelId: live
