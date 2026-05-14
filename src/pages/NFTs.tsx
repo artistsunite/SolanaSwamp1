@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Shield, Zap, Flame, Crown, Filter, ChevronRight } from 'lucide-react';
 import { cn } from '../lib/utils';
 

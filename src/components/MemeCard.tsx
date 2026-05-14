@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Heart, MessageCircle, Share2, Zap } from 'lucide-react';
 import { Meme } from '../types';
 

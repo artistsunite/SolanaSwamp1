@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { CheckCircle2, Clock, ThumbsUp, XCircle } from 'lucide-react';
 import { Proposal, ProposalStatus } from '../types';
 import { cn } from '../lib/utils';

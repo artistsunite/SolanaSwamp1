@@ -1,21 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { ArrowRight, Flame, Layers, ShieldCheck, Zap, TrendingUp, Users, Globe } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { StatCard } from '../components/StatCard';
+import { HeroGallery } from '../components/HeroGallery';
 import { NavItem, TokenStats } from '../types';
 import { getSetting } from '../services/settingsService';
 import { statsService } from '../services/statsService';
 
 export const Home: React.FC = () => {
-  const [heroImage, setHeroImage] = useState<string>('/images/hero_croc.png');
+  const [heroImages, setHeroImages] = useState<string[]>(['/images/hero_croc.png']);
   const [stats, setStats] = useState<TokenStats | null>(null);
 
   useEffect(() => {
     async function loadData() {
       const setting = await getSetting('hero_image');
       if (setting) {
-        setHeroImage(setting);
+        try {
+          // Check if it's a JSON array
+          if (setting.startsWith('[') && setting.endsWith(']')) {
+            setHeroImages(JSON.parse(setting));
+          } else {
+            setHeroImages([setting]);
+          }
+        } catch {
+          setHeroImages([setting]);
+        }
       }
       
       const s = await statsService.getCombinedStats();
@@ -68,29 +78,13 @@ export const Home: React.FC = () => {
             transition={{ duration: 1.2, delay: 0.2 }}
             className="flex-1 relative"
           >
-            <div className="relative z-10 group">
-              <div className="absolute -inset-4 bg-secondary/20 rounded-2xl blur-2xl group-hover:bg-secondary/30 transition-all" />
-              <div className="relative bg-surface-container border-2 border-outline-variant/30 p-4 rounded-2xl">
-                 <div className="aspect-[4/5] bg-surface-container-highest rounded-xl overflow-hidden relative">
-                    <img 
-                      src={heroImage} 
-                      alt="Purple Croc Mascot" 
-                      className="w-full h-full object-contain p-4 group-hover:scale-105 transition-all duration-700"
-                    />
-                    {/* Animated "Verified" Badge */}
-                    <div className="absolute top-4 right-4 bg-secondary text-on-secondary px-3 py-1 flex items-center gap-1 font-display font-black text-xs uppercase tracking-widest shadow-xl">
-                       <ShieldCheck size={14} />
-                       Verified
-                    </div>
-                 </div>
-              </div>
-            </div>
+            <HeroGallery images={heroImages} />
             
             {/* Floating Cards */}
             <motion.div 
               animate={{ y: [0, -20, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -top-10 -right-10 bg-surface-container border border-outline-variant p-4 hidden lg:block glow-purple"
+              className="absolute -top-10 -right-10 bg-surface-container border border-outline-variant p-4 hidden lg:block glow-purple z-20"
             >
               <div className="flex flex-col gap-1">
                 <span className="text-[10px] font-mono opacity-50 uppercase">Corruption Level</span>
@@ -101,7 +95,7 @@ export const Home: React.FC = () => {
             <motion.div 
               animate={{ y: [0, 20, 0] }}
               transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -bottom-10 -left-10 bg-surface-container border border-outline-variant p-4 hidden lg:block glow-green"
+              className="absolute -bottom-10 -left-10 bg-surface-container border border-outline-variant p-4 hidden lg:block glow-green z-20"
             >
               <div className="flex flex-col gap-1">
                 <span className="text-[10px] font-mono opacity-50 uppercase">Current Holders</span>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Share2, Wallet, LogOut, User as UserIcon } from 'lucide-react';
 import { NavItem } from '../types';
 import { cn } from '../lib/utils';

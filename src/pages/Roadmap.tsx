@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Flag, Rocket, CheckCircle2, Shield, Zap, TrendingUp, Globe } from 'lucide-react';
 import { cn } from '../lib/utils';
 
