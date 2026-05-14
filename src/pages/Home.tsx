@@ -8,7 +8,7 @@ import { getSetting } from '../services/settingsService';
 import { statsService } from '../services/statsService';
 
 export const Home: React.FC = () => {
-  const [heroImage, setHeroImage] = useState<string>('https://images.unsplash.com/photo-1743196924823-393c833c8a93?auto=format&fit=crop&q=80&w=800');
+  const [heroImage, setHeroImage] = useState<string>('/images/hero_croc.png');
   const [stats, setStats] = useState<TokenStats | null>(null);
 
   useEffect(() => {
