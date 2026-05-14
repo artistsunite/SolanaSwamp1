@@ -41,10 +41,15 @@ export const Home: React.FC = () => {
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                <Link to={NavItem.Stats} className="bg-secondary text-on-secondary px-10 py-5 font-display font-black text-xl uppercase italic transform hover:scale-105 transition-transform flex items-center justify-center gap-2 glow-green">
+                <a 
+                  href="https://pump.fun/coin/56RCsF1zhwn7wJWd7dHDZu7yiCNGVyaMF8kTZYSBpump" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="bg-secondary text-on-secondary px-10 py-5 font-display font-black text-xl uppercase italic transform hover:scale-105 transition-transform flex items-center justify-center gap-2 glow-green"
+                >
                   Buy $CROC
                   <ArrowRight size={24} />
-                </Link>
+                </a>
                 <Link to={NavItem.NFTs} className="border-4 border-primary text-primary px-10 py-5 font-display font-black text-xl uppercase italic hover:bg-primary/10 transition-colors flex items-center justify-center glow-purple">
                   Browse NFTs
                 </Link>
@@ -164,9 +169,14 @@ export const Home: React.FC = () => {
                 Grab your gear, secure your tokens, and become a part of the most ruthless community on the chain.
               </p>
               <div className="flex flex-col sm:flex-row gap-6 mt-4">
-                 <button className="bg-on-primary text-primary px-12 py-5 font-display font-black text-2xl uppercase italic hover:bg-background transition-colors shadow-2xl">
+                 <a 
+                   href="https://pump.fun/coin/56RCsF1zhwn7wJWd7dHDZu7yiCNGVyaMF8kTZYSBpump" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   className="bg-on-primary text-primary px-12 py-5 font-display font-black text-2xl uppercase italic hover:bg-background transition-colors shadow-2xl flex items-center justify-center"
+                 >
                     SWAP NOW
-                 </button>
+                 </a>
                  <button className="border-4 border-on-primary text-on-primary px-12 py-5 font-display font-black text-2xl uppercase italic hover:bg-on-primary hover:text-primary transition-all">
                     JOIN DISCORD
                  </button>
