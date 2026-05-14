@@ -80,30 +80,32 @@ export const Home: React.FC = () => {
           >
             <HeroGallery images={heroImages} />
             
-            {/* Floating Cards */}
-            <motion.div 
-              animate={{ y: [0, -20, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -top-10 -right-10 bg-surface-container border border-outline-variant p-4 hidden lg:block glow-purple z-20"
-            >
-              <div className="flex flex-col gap-1">
-                <span className="text-[10px] font-mono opacity-50 uppercase">Corruption Level</span>
-                <span className="text-2xl font-display font-black text-primary">Over 9000!</span>
-              </div>
-            </motion.div>
-            
-            <motion.div 
-              animate={{ y: [0, 20, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -bottom-10 -left-10 bg-surface-container border border-outline-variant p-4 hidden lg:block glow-green z-20"
-            >
-              <div className="flex flex-col gap-1">
-                <span className="text-[10px] font-mono opacity-50 uppercase">Current Holders</span>
-                <span className="text-2xl font-display font-black text-secondary">
-                  {stats ? stats.holders.toLocaleString() : "69,420"}
-                </span>
-              </div>
-            </motion.div>
+            {/* Floating Info Cards Layer */}
+            <div className="absolute inset-0 pointer-events-none z-20">
+              <motion.div 
+                animate={{ y: [0, -20, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute -top-10 -right-10 bg-surface-container border border-outline-variant p-4 hidden lg:block glow-purple pointer-events-auto"
+              >
+                <div className="flex flex-col gap-1">
+                  <span className="text-[10px] font-mono opacity-50 uppercase">Total Supply</span>
+                  <span className="text-2xl font-display font-black text-primary">1,111 CROCS</span>
+                </div>
+              </motion.div>
+              
+              <motion.div 
+                animate={{ y: [0, 20, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute -bottom-10 -left-10 bg-surface-container border border-outline-variant p-4 hidden lg:block glow-green pointer-events-auto"
+              >
+                <div className="flex flex-col gap-1">
+                  <span className="text-[10px] font-mono opacity-50 uppercase">Drop Status</span>
+                  <span className="text-2xl font-display font-black text-secondary uppercase">
+                    MINTING SOON
+                  </span>
+                </div>
+              </motion.div>
+            </div>
           </motion.div>
         </div>
       </section>
