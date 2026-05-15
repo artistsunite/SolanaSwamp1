@@ -10,7 +10,8 @@ import {
   RefreshCw,
   Flame,
   Zap,
-  Globe
+  Globe,
+  Trophy
 } from 'lucide-react';
 import { StatCard } from '../components/StatCard';
 import { cn } from '../lib/utils';
@@ -27,6 +28,7 @@ import {
 } from 'recharts';
 import { statsService } from '../services/statsService';
 import { TokenStats } from '../types';
+import { SlotMachine } from '../components/SlotMachine';
 
 const chartData = [
   { name: '12:00', price: 0.00038, vol: 120 },
@@ -38,7 +40,7 @@ const chartData = [
   { name: '18:00', price: 0.00048, vol: 320 },
 ];
 
-export const Stats: React.FC = () => {
+export const Play: React.FC = () => {
   const [stats, setStats] = useState<TokenStats | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -86,6 +88,14 @@ export const Stats: React.FC = () => {
             </div>
           </div>
         </header>
+
+        <div className="max-w-4xl mx-auto mb-16">
+          <div className="flex items-center gap-2 text-secondary font-mono text-sm uppercase tracking-widest font-bold mb-6">
+            <Trophy size={16} />
+            Mini Game: The Swamp Casino
+          </div>
+          <SlotMachine />
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
           <div className="lg:col-span-2 flex flex-col gap-8">

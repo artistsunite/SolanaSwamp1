@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { Home } from './pages/Home';
-import { Stats } from './pages/Stats';
+import { Play } from './pages/Play';
 import { NFTs } from './pages/NFTs';
 import { Roadmap } from './pages/Roadmap';
 import { Community } from './pages/Community';
@@ -56,7 +56,7 @@ function App() {
         <main>
           <Routes>
             <Route path="/" element={<PageTransition><Home /></PageTransition>} />
-            <Route path="/stats" element={<PageTransition><Stats /></PageTransition>} />
+            <Route path="/play" element={<PageTransition><Play /></PageTransition>} />
             <Route path="/nfts" element={<PageTransition><NFTs /></PageTransition>} />
             <Route path="/roadmap" element={<PageTransition><Roadmap /></PageTransition>} />
             <Route path="/community" element={<PageTransition><Community /></PageTransition>} />

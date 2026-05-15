@@ -36,7 +36,7 @@ export const Navbar: React.FC = () => {
 
   const navLinks = [
     { name: 'Swamp', path: NavItem.Home },
-    { name: 'Stats', path: NavItem.Stats },
+    { name: 'Play', path: NavItem.Stats },
     { name: 'NFTs', path: NavItem.NFTs },
     { name: 'Roadmap', path: NavItem.Roadmap },
     { name: 'Community', path: NavItem.Community },

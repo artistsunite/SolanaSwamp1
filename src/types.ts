@@ -36,7 +36,7 @@ export interface TokenStats {
 
 export enum NavItem {
   Home = '/',
-  Stats = '/stats',
+  Stats = '/play',
   NFTs = '/nfts',
   Roadmap = '/roadmap',
   Community = '/community',

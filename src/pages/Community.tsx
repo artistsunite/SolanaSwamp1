@@ -40,10 +40,10 @@ const mockProposals: Proposal[] = [
 ];
 
 const mockMemes: Meme[] = [
-  { id: '1', imageUrl: 'https://images.unsplash.com/photo-1590682680375-393a5259702a?auto=format&fit=crop&q=80&w=400', author: 'CrocLord420', tips: 4.5, createdAt: new Date().toISOString() },
-  { id: '2', imageUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=400', author: 'MudMaster', tips: 12.0, createdAt: new Date().toISOString() },
-  { id: '3', imageUrl: 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&q=80&w=400', author: 'SludgeQueen', tips: 0.8, createdAt: new Date().toISOString() },
-  { id: '4', imageUrl: 'https://images.unsplash.com/photo-1634986666676-ec8fd927c23d?auto=format&fit=crop&q=80&w=400', author: 'NeonGator', tips: 2.1, createdAt: new Date().toISOString() },
+  { id: '1', imageUrl: '/images/gallery/photo_3.jpg', author: 'CrocLord420', tips: 4.5, createdAt: new Date().toISOString() },
+  { id: '2', imageUrl: '/images/gallery/photo_4.jpg', author: 'MudMaster', tips: 12.0, createdAt: new Date().toISOString() },
+  { id: '3', imageUrl: '/images/gallery/photo_6.jpg', author: 'SludgeQueen', tips: 0.8, createdAt: new Date().toISOString() },
+  { id: '4', imageUrl: '/images/gallery/photo_8.jpg', author: 'NeonGator', tips: 2.1, createdAt: new Date().toISOString() },
 ];
 
 export const Community: React.FC = () => {
@@ -72,11 +72,19 @@ export const Community: React.FC = () => {
           <div className="flex flex-col gap-4">
              <div className="flex items-center gap-2 text-secondary font-mono text-sm uppercase tracking-[0.3em] font-bold">
                 <Users size={18} />
-                Global Movement
+                JOIN THE SWAMP
              </div>
-             <h1 className="text-6xl md:text-9xl font-display font-black tracking-tighter uppercase leading-[0.85] italic">COMMUNITY<br />LABS</h1>
+             <h1 className="text-6xl md:text-9xl font-display font-black tracking-tighter uppercase leading-[0.85] italic">welcome<br />home</h1>
           </div>
         </header>
+
+        <div className="w-full mb-12 rounded-2xl overflow-hidden border-4 border-outline-variant/30 shadow-2xl">
+           <img 
+             src="/images/community/croccommunity1.png" 
+             alt="Croc Community" 
+             className="w-full h-auto object-cover" 
+           />
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           {/* DAO Section */}

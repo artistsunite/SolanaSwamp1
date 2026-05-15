@@ -9,25 +9,25 @@ import { getSetting } from '../services/settingsService';
 import { statsService } from '../services/statsService';
 
 export const Home: React.FC = () => {
-  const [heroImages, setHeroImages] = useState<string[]>(['/images/hero_croc.png']);
+  const [heroImages] = useState<string[]>([
+    '/images/gallery/photo_3.jpg',
+    '/images/gallery/photo_4.jpg',
+    '/images/gallery/photo_6.jpg',
+    '/images/gallery/photo_8.jpg',
+    '/images/gallery/photo_9.jpg',
+    '/images/gallery/photo_11.jpg',
+    '/images/gallery/photo_12.jpg',
+    '/images/gallery/photo_14.jpg',
+    '/images/gallery/photo_15.jpg',
+    '/images/gallery/photo_16.jpg',
+    '/images/gallery/photo_17.jpg',
+    '/images/gallery/photo_18.jpg',
+    '/images/gallery/photo_19.jpg'
+  ]);
   const [stats, setStats] = useState<TokenStats | null>(null);
 
   useEffect(() => {
     async function loadData() {
-      const setting = await getSetting('hero_image');
-      if (setting) {
-        try {
-          // Check if it's a JSON array
-          if (setting.startsWith('[') && setting.endsWith(']')) {
-            setHeroImages(JSON.parse(setting));
-          } else {
-            setHeroImages([setting]);
-          }
-        } catch {
-          setHeroImages([setting]);
-        }
-      }
-      
       const s = await statsService.getCombinedStats();
       if (s) setStats(s);
     }
@@ -190,10 +190,10 @@ export const Home: React.FC = () => {
            <div className="absolute inset-0 swamp-texture opacity-30 mix-blend-overlay" />
            <div className="relative z-10 p-12 md:p-24 flex flex-col items-center text-center gap-8">
               <h2 className="text-5xl md:text-8xl font-display font-black text-on-primary tracking-tighter uppercase leading-[0.85]">
-                READY TO JOIN<br />THE MOVEMENT?
+                ENTER THE SWAMP
               </h2>
               <p className="text-on-primary/70 font-display font-bold text-xl md:text-2xl max-w-2xl uppercase">
-                Grab your gear, secure your tokens, and become a part of the most ruthless community on the chain.
+                Stay snappy. Stay sharp. Stay alpha.
               </p>
               
               <div className="w-full max-w-3xl aspect-video rounded-2xl overflow-hidden border-4 border-on-primary/20 shadow-2xl">
@@ -213,7 +213,7 @@ export const Home: React.FC = () => {
                    rel="noopener noreferrer" 
                    className="bg-on-primary text-primary px-12 py-5 font-display font-black text-2xl uppercase italic hover:bg-background transition-colors shadow-2xl flex items-center justify-center"
                  >
-                    SWAP NOW
+                    BUY $CROC
                  </a>
                  <a 
                    href="https://discord.gg/3WA9zgEaZD" 

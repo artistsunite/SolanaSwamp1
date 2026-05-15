@@ -42,7 +42,7 @@ export const Footer: React.FC = () => {
              <h4 className="font-display font-black text-xs uppercase tracking-[0.3em] mb-8 text-primary">Explore</h4>
              <ul className="flex flex-col gap-4">
                 <li><Link to={NavItem.Home} className="font-display font-bold text-sm uppercase hover:text-secondary transition-colors italic">The Swamp</Link></li>
-                <li><Link to={NavItem.Stats} className="font-display font-bold text-sm uppercase hover:text-secondary transition-colors italic">DEX Data</Link></li>
+                <li><Link to={NavItem.Stats} className="font-display font-bold text-sm uppercase hover:text-secondary transition-colors italic">Play</Link></li>
                 <li><Link to={NavItem.NFTs} className="font-display font-bold text-sm uppercase hover:text-secondary transition-colors italic">Gallery</Link></li>
                 <li><Link to={NavItem.Community} className="font-display font-bold text-sm uppercase hover:text-secondary transition-colors italic">Governance</Link></li>
              </ul>
