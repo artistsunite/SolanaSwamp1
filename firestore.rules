@@ -76,6 +76,15 @@ service cloud.firestore {
         && (data.updatedAt == request.time || data.updatedAt is timestamp);
     }
 
+    function isValidPing(data) {
+      return data.keys().hasAll(['lat', 'lng', 'color', 'createdAt'])
+        && data.keys().size() == 4
+        && data.lat is number && data.lat >= -90 && data.lat <= 90
+        && data.lng is number && data.lng >= -180 && data.lng <= 180
+        && data.color is string && data.color.size() <= 20
+        && (data.createdAt == request.time || data.createdAt is timestamp);
+    }
+
     // Phase 4: Match Blocks
 
     match /proposals/{proposalId} {
@@ -111,6 +120,11 @@ service cloud.firestore {
     match /settings/{settingId} {
       allow get, list: if true;
       allow write: if isAdmin() && isValidSetting(incoming());
+    }
+
+    match /pings/{pingId} {
+      allow list: if true;
+      allow create: if isValidPing(incoming());
     }
   }
 }

@@ -53,6 +53,18 @@
         "lpStatus": { "type": "string" }
       },
       "required": ["price", "marketCap", "liquidity", "holders", "volume24h", "burnedToken", "burnPercent"]
+    },
+    "Ping": {
+      "title": "Visitor Ping",
+      "description": "Location marker for a visitor",
+      "type": "object",
+      "properties": {
+        "lat": { "type": "number" },
+        "lng": { "type": "number" },
+        "color": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["lat", "lng", "color", "createdAt"]
     }
   },
   "firestore": {
@@ -71,6 +83,10 @@
     "settings": {
       "schema": "Setting",
       "description": "Global app settings and configuration"
+    },
+    "pings": {
+      "schema": "Ping",
+      "description": "Visitor presence pings"
     }
   }
 }

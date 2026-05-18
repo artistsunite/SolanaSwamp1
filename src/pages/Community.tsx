@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
-  Users, 
   Plus, 
   Search, 
   MessageSquare, 
@@ -46,6 +45,8 @@ const mockMemes: Meme[] = [
   { id: '4', imageUrl: '/images/gallery/photo_8.jpg', author: 'NeonGator', tips: 2.1, createdAt: new Date().toISOString() },
 ];
 
+import { WorldMap } from '../components/WorldMap';
+
 export const Community: React.FC = () => {
   const [proposals, setProposals] = useState<Proposal[]>(mockProposals);
   const [memes, setMemes] = useState<Meme[]>(mockMemes);
@@ -68,23 +69,12 @@ export const Community: React.FC = () => {
   return (
     <div className="min-h-screen pt-32 pb-20 px-4">
       <div className="container mx-auto">
-        <header className="mb-20">
-          <div className="flex flex-col gap-4">
-             <div className="flex items-center gap-2 text-secondary font-mono text-sm uppercase tracking-[0.3em] font-bold">
-                <Users size={18} />
-                JOIN THE SWAMP
-             </div>
-             <h1 className="text-6xl md:text-9xl font-display font-black tracking-tighter uppercase leading-[0.85] italic">welcome<br />home</h1>
-          </div>
-        </header>
 
-        <div className="w-full mb-12 rounded-2xl overflow-hidden border-4 border-outline-variant/30 shadow-2xl">
-           <img 
-             src="/images/community/croccommunity1.png" 
-             alt="Croc Community" 
-             className="w-full h-auto object-cover" 
-           />
+
+        <div className="mb-16">
+          <WorldMap />
         </div>
+
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           {/* DAO Section */}

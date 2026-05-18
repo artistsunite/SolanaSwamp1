@@ -41,3 +41,11 @@ export enum NavItem {
   Roadmap = '/roadmap',
   Community = '/community',
 }
+
+export interface Ping {
+  id: string;
+  lat: number;
+  lng: number;
+  color: string;
+  createdAt: any;
+}

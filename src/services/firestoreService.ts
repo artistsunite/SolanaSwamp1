@@ -1,6 +1,6 @@
-import { collection, query, orderBy, limit, onSnapshot, addDoc, updateDoc, doc, serverTimestamp, getDocs, increment } from 'firebase/firestore';
+import { collection, query, orderBy, limit, onSnapshot, addDoc, updateDoc, doc, serverTimestamp, getDocs, increment, Timestamp } from 'firebase/firestore';
 import { db, auth } from '../lib/firebase';
-import { Proposal, Meme, TokenStats, ProposalStatus } from '../types';
+import { Proposal, Meme, TokenStats, ProposalStatus, Ping } from '../types';
 
 // Error handling helper as per instructions
 enum OperationType {
@@ -101,6 +101,37 @@ export const firestoreService = {
     } catch (error) {
       handleFirestoreError(error, OperationType.GET, 'stats');
       return null;
+    }
+  },
+
+  // Pings
+  subscribeToPings: (callback: (pings: Ping[]) => void) => {
+    const q = query(collection(db, 'pings'), orderBy('createdAt', 'desc'), limit(150));
+    return onSnapshot(q,
+      (snapshot) => {
+        const pings = snapshot.docs.map(doc => {
+          const data = doc.data();
+          return { 
+            id: doc.id, 
+            ...data,
+            // Handle both Firestore Timestamp and potential fallback
+            createdAt: data.createdAt instanceof Timestamp ? data.createdAt.toDate() : new Date(data.createdAt || Date.now())
+          } as Ping;
+        });
+        callback(pings);
+      },
+      (error) => handleFirestoreError(error, OperationType.LIST, 'pings')
+    );
+  },
+
+  recordPing: async (pingData: { lat: number; lng: number; color: string }) => {
+    try {
+      await addDoc(collection(db, 'pings'), {
+        ...pingData,
+        createdAt: serverTimestamp()
+      });
+    } catch (error) {
+      handleFirestoreError(error, OperationType.CREATE, 'pings');
     }
   }
 };
