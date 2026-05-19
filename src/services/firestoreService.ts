@@ -106,7 +106,7 @@ export const firestoreService = {
 
   // Pings
   subscribeToPings: (callback: (pings: Ping[]) => void) => {
-    const q = query(collection(db, 'pings'), orderBy('createdAt', 'desc'), limit(150));
+    const q = query(collection(db, 'pings'), orderBy('createdAt', 'desc'));
     return onSnapshot(q,
       (snapshot) => {
         const pings = snapshot.docs.map(doc => {
