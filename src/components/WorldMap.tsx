@@ -87,13 +87,18 @@ export const WorldMap: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-full aspect-[2/1] relative">
+    <div className="w-full aspect-[2/1] relative bg-surface-container/50 border border-outline-variant/20 rounded-2xl overflow-hidden shadow-inner min-h-[300px]">
+      <div className="absolute top-4 left-6 z-20 flex items-center gap-2">
+         <div className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
+         <span className="text-[10px] font-mono text-secondary uppercase font-bold tracking-widest">Live Presence Data</span>
+      </div>
+      
       <ComposableMap
         projection="geoEqualEarth"
         projectionConfig={{
           scale: 160
         }}
-        className="w-full h-full"
+        className="w-full h-full opacity-80"
       >
         <Geographies geography={geoUrl}>
           {({ geographies }) =>
