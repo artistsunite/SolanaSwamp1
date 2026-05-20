@@ -1,6 +1,6 @@
 import { collection, query, orderBy, limit, onSnapshot, addDoc, updateDoc, doc, serverTimestamp, getDocs, increment, Timestamp } from 'firebase/firestore';
 import { db, auth } from '../lib/firebase';
-import { Proposal, Meme, TokenStats, ProposalStatus, Ping } from '../types';
+import { Proposal, Meme, TokenStats, ProposalStatus, Ping, CityVisit } from '../types';
 
 // Error handling helper as per instructions
 enum OperationType {
@@ -106,21 +106,53 @@ export const firestoreService = {
 
   // Pings
   subscribeToPings: (callback: (pings: Ping[]) => void) => {
-    const q = query(collection(db, 'pings'), orderBy('createdAt', 'desc'), limit(300));
-    return onSnapshot(q,
-      (snapshot) => {
-        const pings = snapshot.docs.map(doc => {
-          const data = doc.data();
-          return { 
-            id: doc.id, 
-            ...data,
-            // Handle both Firestore Timestamp and potential fallback
-            createdAt: data.createdAt instanceof Timestamp ? data.createdAt.toDate() : new Date(data.createdAt || Date.now())
-          } as Ping;
-        });
-        callback(pings);
-      },
-      (error) => handleFirestoreError(error, OperationType.LIST, 'pings')
+    const handleSnapshot = (snapshot: any) => {
+      const pings = snapshot.docs.map((doc: any) => {
+        const data = doc.data();
+        const timestamp = data.createdAt;
+        
+        let date: Date;
+        if (timestamp instanceof Timestamp) {
+          date = timestamp.toDate();
+        } else if (timestamp && typeof timestamp.toDate === 'function') {
+          date = timestamp.toDate();
+        } else if (timestamp && typeof timestamp === 'object' && 'seconds' in timestamp) {
+          date = new Date(timestamp.seconds * 1000);
+        } else if (timestamp && (typeof timestamp === 'string' || typeof timestamp === 'number')) {
+          date = new Date(timestamp);
+        } else {
+          date = new Date();
+        }
+
+        const lat = Number(data.lat);
+        const lng = Number(data.lng);
+
+        if (isNaN(lat) || isNaN(lng)) return null;
+
+        return { 
+          id: doc.id, 
+          ...data,
+          lat,
+          lng,
+          createdAt: date
+        } as Ping;
+      }).filter((p: any): p is Ping => p !== null);
+      
+      // Sort in memory on the client by createdAt desc (newest first)
+      pings.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+      
+      callback(pings);
+    };
+
+    // Unordered collection query does not require complex index setup
+    const limitCount = 20000;
+    const q = query(collection(db, 'pings'), limit(limitCount));
+    
+    return onSnapshot(q, 
+      handleSnapshot,
+      (error) => {
+        handleFirestoreError(error, OperationType.LIST, 'pings');
+      }
     );
   },
 
@@ -132,6 +164,63 @@ export const firestoreService = {
       });
     } catch (error) {
       handleFirestoreError(error, OperationType.CREATE, 'pings');
+    }
+  },
+
+  subscribeToCityVisits: (callback: (visits: CityVisit[]) => void) => {
+    const handleSnapshot = (snapshot: any) => {
+      const visits = snapshot.docs.map((doc: any) => {
+        const data = doc.data();
+        const timestamp = data.createdAt;
+        
+        let date: Date;
+        if (timestamp instanceof Timestamp) {
+          date = timestamp.toDate();
+        } else if (timestamp && typeof timestamp.toDate === 'function') {
+          date = timestamp.toDate();
+        } else if (timestamp && typeof timestamp === 'object' && 'seconds' in timestamp) {
+          date = new Date(timestamp.seconds * 1000);
+        } else if (timestamp && (typeof timestamp === 'string' || typeof timestamp === 'number')) {
+          date = new Date(timestamp);
+        } else {
+          date = new Date();
+        }
+
+        const lat = Number(data.lat);
+        const lng = Number(data.lng);
+
+        if (isNaN(lat) || isNaN(lng)) return null;
+
+        return { 
+          id: doc.id, 
+          city: data.city || 'Unknown City',
+          country: data.country || 'Unknown Country',
+          lat,
+          lng,
+          createdAt: date
+        } as CityVisit;
+      }).filter((v: any): v is CityVisit => v !== null);
+      
+      callback(visits);
+    };
+
+    const q = query(collection(db, 'city_visits'), limit(20000));
+    return onSnapshot(q, 
+      handleSnapshot,
+      (error) => {
+        handleFirestoreError(error, OperationType.LIST, 'city_visits');
+      }
+    );
+  },
+
+  recordCityVisit: async (visitData: { city: string; country: string; lat: number; lng: number }) => {
+    try {
+      await addDoc(collection(db, 'city_visits'), {
+        ...visitData,
+        createdAt: serverTimestamp()
+      });
+    } catch (error) {
+      handleFirestoreError(error, OperationType.CREATE, 'city_visits');
     }
   }
 };

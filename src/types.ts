@@ -49,3 +49,12 @@ export interface Ping {
   color: string;
   createdAt: any;
 }
+
+export interface CityVisit {
+  id: string;
+  city: string;
+  country: string;
+  lat: number;
+  lng: number;
+  createdAt: any;
+}

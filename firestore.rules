@@ -85,6 +85,16 @@ service cloud.firestore {
         && (data.createdAt == request.time || data.createdAt is timestamp);
     }
 
+    function isValidCityVisit(data) {
+      return data.keys().hasAll(['city', 'country', 'lat', 'lng', 'createdAt'])
+        && data.keys().size() == 5
+        && data.city is string && data.city.size() > 0 && data.city.size() <= 100
+        && data.country is string && data.country.size() > 0 && data.country.size() <= 100
+        && data.lat is number && data.lat >= -90 && data.lat <= 90
+        && data.lng is number && data.lng >= -180 && data.lng <= 180
+        && (data.createdAt == request.time || data.createdAt is timestamp);
+    }
+
     // Phase 4: Match Blocks
 
     match /proposals/{proposalId} {
@@ -123,8 +133,13 @@ service cloud.firestore {
     }
 
     match /pings/{pingId} {
-      allow list: if true;
+      allow read: if true;
       allow create: if isValidPing(incoming());
+    }
+
+    match /city_visits/{visitId} {
+      allow read: if true;
+      allow create: if isValidCityVisit(incoming());
     }
   }
 }

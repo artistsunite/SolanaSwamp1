@@ -65,6 +65,19 @@
         "createdAt": { "type": "string", "format": "date-time" }
       },
       "required": ["lat", "lng", "color", "createdAt"]
+    },
+    "CityVisit": {
+      "title": "City Visit",
+      "description": "Approximate city/country location of a website visitor",
+      "type": "object",
+      "properties": {
+        "city": { "type": "string" },
+        "country": { "type": "string" },
+        "lat": { "type": "number" },
+        "lng": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["city", "country", "lat", "lng", "createdAt"]
     }
   },
   "firestore": {
@@ -87,6 +100,10 @@
     "pings": {
       "schema": "Ping",
       "description": "Visitor presence pings"
+    },
+    "city_visits": {
+      "schema": "CityVisit",
+      "description": "Collection of visitor location records"
     }
   }
 }

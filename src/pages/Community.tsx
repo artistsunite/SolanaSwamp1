@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import { MemeCard } from '../components/MemeCard';
 import { ProposalCard } from '../components/ProposalCard';
-import { ProposalStatus, Proposal, Meme } from '../types';
+import { ProposalStatus, Proposal, Meme, Ping } from '../types';
 import { firestoreService } from '../services/firestoreService';
 
 const mockProposals: Proposal[] = [
@@ -50,6 +50,7 @@ import { WorldMap } from '../components/WorldMap';
 export const Community: React.FC = () => {
   const [proposals, setProposals] = useState<Proposal[]>(mockProposals);
   const [memes, setMemes] = useState<Meme[]>(mockMemes);
+  const [pings, setPings] = useState<Ping[]>([]);
 
   useEffect(() => {
     const unsubProposals = firestoreService.subscribeToProposals((data) => {
@@ -60,9 +61,14 @@ export const Community: React.FC = () => {
       if (data.length > 0) setMemes(data);
     });
 
+    const unsubPings = firestoreService.subscribeToPings((data) => {
+      setPings(data);
+    });
+
     return () => {
       unsubProposals();
       unsubMemes();
+      unsubPings();
     };
   }, []);
 
